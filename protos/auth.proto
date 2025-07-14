@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package grpc;
+
+message Empty {}
+message Nothing {}
+
+message GetUser {
+  int32 telegram_id = 1;
+}
+
+message User {
+  string id = 1;
+}
+
+message AuthUser {
+  optional string telegram_id = 1;
+  optional string username = 2;
+  optional string password = 4;
+}
+
+service AuthService {
+  rpc register_telegram(AuthUser) returns (Empty);
+  rpc register(AuthUser) returns (Empty);
+  rpc login(AuthUser) returns (User);
+  rpc login_telegram(AuthUser) returns (User);
+  rpc validate(GetUser) returns (User);
+}
+
