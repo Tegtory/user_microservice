@@ -16,18 +16,17 @@ show_error_codes = true
 warn_unreachable = true
 
 [[tool.mypy.overrides]]
-module = 'user.auth_pb2'
-disallow_untyped_defs = false
-disable_error_code="attr-defined"
-
-[[tool.mypy.overrides]]
-module = 'user.auth_pb2_grpc'
+module = 'user.auth_pb2,user.auth_pb2_grpc'
 disallow_untyped_defs = false
 disable_error_code="attr-defined"
 
 [[tool.mypy.overrides]]
 module = 'user.presentors.grpc.service'
-disable_error_code="attr-defined,name-defined"
+disable_error_code="attr-defined,name-defined,no-untyped-call"
+
+[[tool.mypy.overrides]]
+module = 'user.presentors.grpc.server'
+disable_error_code="no-untyped-call"
 
 [tool.pytest.ini_options]
 asyncio_default_fixture_loop_scope = "function"

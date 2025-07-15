@@ -1,10 +1,11 @@
 import contextlib
 
 from user.infrastructure.logger import configure_logger
+from user.presentors.grpc.server import Server
 
 
 async def main() -> None:
-    pass
+    await asyncio.gather(Server().serve())
 
 
 if __name__ == "__main__":

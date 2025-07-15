@@ -14,7 +14,7 @@ message User {
 }
 
 message AuthUser {
-  optional string telegram_id = 1;
+  optional int32 telegram_id = 1;
   optional string username = 2;
   optional string password = 4;
 }

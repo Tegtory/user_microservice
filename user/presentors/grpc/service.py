@@ -1,42 +1,49 @@
 import grpc
+from dishka import FromDishka
 
-import user.auth_pb2 as auth
+import user.auth_pb2 as proto
 import user.auth_pb2_grpc as auth_grpc
-from user.domain.models import AuthUser, User
+from user.common.exceptions import AppError
+from user.domain.models import AuthUser
+from user.domain.use_cases.user import UserUseCase
+from user.infrastructure.injector import inject
 
 
 class AuthService(auth_grpc.AuthServiceServicer):
-    def __init__(self) -> None:
-        self.users: list[User] = []
+    @inject
+    async def register_telegram(
+        self,
+        user: AuthUser,
+        context: grpc.ServicerContext,
+        use_case: FromDishka[UserUseCase],
+    ) -> proto.Empty:
+        if not user.telegram_id or not user.username:
+            raise AppError
+        await use_case.register_by_telegram(user.telegram_id, user.username)
+        return proto.Empty()
 
-    def register_telegram(
+    async def register(
         self, user: AuthUser, context: grpc.ServicerContext
     ) -> None:
-        self.users.append(
-            User(username=user.username, telegram_id=user.telegram_id)
-        )
+        return None
 
-    def register(self, user: AuthUser, context: grpc.ServicerContext) -> None:
-        self.users.append(User(username=user.username, password=user.password))
-
-    def login(
+    async def login(
         self, user: AuthUser, context: grpc.ServicerContext
-    ) -> auth.User:
-        for i in filter(
-            lambda x: x.username == user.username
-            and x.password == user.password,
-            self.users,
-        ):
-            return auth.User(id=i.id)
-        context.set_code(grpc.StatusCode.UNAUTHENTICATED)
-        return auth.User(id="0")
+    ) -> None:
+        return None
 
-    def login_telegram(
-        self, user: AuthUser, context: grpc.ServicerContext
-    ) -> auth.User:
-        for i in filter(
-            lambda x: x.telegram_id == user.telegram_id, self.users
-        ):
-            return auth.User(id=i.id)
-        context.set_code(grpc.StatusCode.UNAUTHENTICATED)
-        return auth.User(id="0")
+    @inject
+    async def login_telegram(
+        self,
+        user: AuthUser,
+        context: grpc.ServicerContext,
+        use_case: FromDishka[UserUseCase],
+    ) -> proto.User:
+        if not user.telegram_id:
+            context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
+            return proto.User(id="0")
+        authorized = await use_case.login_by_telegram(user.telegram_id)
+        if not authorized:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            return proto.User(id="0")
+        return proto.User(id=str(authorized.id))

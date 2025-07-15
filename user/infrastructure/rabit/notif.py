@@ -16,7 +16,7 @@ class NotifRepositoryImpl:
     async def about__user_registered(
         self, notification: UserRegisteredNotification
     ) -> None:
-        body = json.dumps(notification.model_dump()).encode()
+        body = json.dumps({"id": str(notification.id)}).encode()
         message = Message(body, delivery_mode=DeliveryMode.PERSISTENT)
 
         await self.exchange.publish(message, routing_key="info")

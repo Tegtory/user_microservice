@@ -7,6 +7,5 @@ class RabbitMQService:
     async def get_exchange(host: str, name: str) -> AbstractExchange:
         connection = await connect(host)
 
-        async with connection:
-            channel = await connection.channel()
-            return await channel.declare_exchange(name, ExchangeType.FANOUT)
+        channel = await connection.channel()
+        return await channel.declare_exchange(name, ExchangeType.FANOUT)
