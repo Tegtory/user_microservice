@@ -1,4 +1,3 @@
-from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -7,4 +6,5 @@ class Config(BaseSettings):
         env_file=".env", env_file_encoding="utf-8"
     )
 
-    SECRET_KEY: str = Field()
+    SECRET_KEY: str
+    RABIT_HOST: str

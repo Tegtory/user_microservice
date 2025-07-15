@@ -6,6 +6,7 @@ from user.infrastructure.logger import configure_logger
 async def main() -> None:
     pass
 
+
 if __name__ == "__main__":
     import asyncio
 
