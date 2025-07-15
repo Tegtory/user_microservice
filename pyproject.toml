@@ -88,7 +88,6 @@ select = [
     "INP",
     "SIM",
     "TD",
-    "TC",
     "C90",
     "N",
     "PL",
