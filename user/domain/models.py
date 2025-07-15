@@ -7,7 +7,6 @@ class User(BaseModel):
     id: uuid.UUID = Field(default_factory=uuid.uuid4)
     telegram_id: int | None = None
     username: str | None = None
-    password: str | None = None
     is_admin: bool = False
     is_banned: bool = False
 
@@ -15,4 +14,3 @@ class User(BaseModel):
 class AuthUser(BaseModel):
     telegram_id: int
     username: str
-    password: str | None = None

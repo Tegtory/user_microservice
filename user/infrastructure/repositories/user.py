@@ -1,16 +1,31 @@
+import logging
 import uuid
+
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from user.common.exceptions import NotFoundError
 from user.domain.models import AuthUser, User
+from user.infrastructure.repositories.models import User as BDUser
+
+logger = logging.getLogger(__name__)
 
 
-class MemoryUserRepositoryImpl:
-    def __init__(self) -> None:
-        self.users: list[User] = []
+class SQLUserRepositoryImpl:
+    def __init__(self, session: AsyncSession) -> None:
+        self.session = session
 
     async def create(self, user: AuthUser) -> User:
+        logger.info(f"Creating user {user.telegram_id}")
         registered = User(**user.model_dump())
-        self.users.append(registered)
+        self.session.add(
+            BDUser(
+                id=registered.id,
+                telegram_id=registered.telegram_id,
+                username=registered.username,
+            )
+        )
+        await self.session.commit()
         return registered
 
     async def update(self, user: User) -> User:
@@ -20,6 +35,16 @@ class MemoryUserRepositoryImpl:
         return User()
 
     async def get_by_tg_id(self, uid: int) -> User | None:
-        for i in filter(lambda x: x.telegram_id == uid, self.users):
-            return i if isinstance(i, User) else None
+        logger.info(f"Authorizing user - {uid}")
+        stmt = select(BDUser).where(BDUser.telegram_id == uid)
+        user = (await self.session.execute(stmt)).first()
+        if user:
+            return User(
+                username=user[0].username,
+                telegram_id=user[0].telegram_id,
+                id=user[0].id,
+                is_admin=user[0].is_admin,
+                is_banned=user[0].is_banned,
+            )
+
         raise NotFoundError

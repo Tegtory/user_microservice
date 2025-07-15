@@ -13,6 +13,10 @@
 3. запуск
 
     ```bash
+   > alembic upgrade head
+    ```
+
+    ```bash
    > python -m user
     ```
 
@@ -21,3 +25,8 @@
     ```bash
    > docker compose -f ...
     ```
+
+# TODO
+
+- [ ] Полноценная авторизация с помощью ТГ
+- [ ] Оптимизация и улучшения уведомлений RabbitMQ
