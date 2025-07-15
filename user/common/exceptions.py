@@ -4,3 +4,7 @@ class AppError(Exception):
 
 class NotAuthenticatedError(AppError):
     pass
+
+
+class NotFoundError(AppError):
+    pass

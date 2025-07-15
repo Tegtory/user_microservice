@@ -14,5 +14,5 @@ class UserRepository(Protocol):
     async def get(self, uid: uuid.UUID) -> User | None:
         pass
 
-    async def get_by_telegram_id(self, uid: int) -> User:
+    async def get_by_tg_id(self, uid: int) -> User:
         pass

@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 class Server:
     def __init__(
-        self, port: int = 5000, host: str = "[::]", max_workers: int = 10
+        self, port: int = 5000, host: str = "[::]", max_workers: int = 3
     ) -> None:
         self._port = port
         self._host = host

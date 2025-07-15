@@ -18,7 +18,7 @@ warn_unreachable = true
 [[tool.mypy.overrides]]
 module = 'user.auth_pb2,user.auth_pb2_grpc'
 disallow_untyped_defs = false
-disable_error_code="attr-defined"
+disable_error_code="attr-defined,var-annotated"
 
 [[tool.mypy.overrides]]
 module = 'user.presentors.grpc.service'
@@ -121,7 +121,7 @@ docstring-code-line-length = "dynamic"
 branch = true
 omit = [
     "tests/*",
-    "domain/interfaces/*",
+    "user/domain/interfaces/*",
 ]
 
 

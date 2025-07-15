@@ -8,10 +8,11 @@ class User(BaseModel):
     telegram_id: int | None = None
     username: str | None = None
     password: str | None = None
-    permissions: list[str] | None = None
+    is_admin: bool = False
+    is_banned: bool = False
 
 
 class AuthUser(BaseModel):
-    telegram_id: int | None = None
-    username: str | None = None
+    telegram_id: int
+    username: str
     password: str | None = None

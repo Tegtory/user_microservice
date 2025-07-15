@@ -1,4 +1,4 @@
-from user.common.exceptions import AppError
+from user.common.exceptions import AppError, NotFoundError
 from user.domain.interfaces.notification import UserNotificationRepository
 from user.domain.interfaces.user import UserRepository
 from user.domain.models import AuthUser, User
@@ -13,14 +13,17 @@ class UserUseCase:
         self.notif = notif
 
     async def register_by_telegram(self, uid: int, username: str) -> None:
-        if await self.repository.get_by_telegram_id(uid):
-            raise AppError
-        user = await self.repository.create(
-            AuthUser(telegram_id=uid, username=username)
-        )
-        await self.notif.about__user_registered(
-            UserRegisteredNotification(id=user.id)
-        )
+        try:
+            await self.repository.get_by_tg_id(uid)
+        except NotFoundError:
+            user = await self.repository.create(
+                AuthUser(telegram_id=uid, username=username)
+            )
+            await self.notif.about__user_registered(
+                UserRegisteredNotification(id=user.id)
+            )
+            return None
+        raise AppError
 
-    async def login_by_telegram(self, uid: int) -> User:
-        return await self.repository.get_by_telegram_id(uid)
+    async def get_by_telegram(self, uid: int) -> User:
+        return await self.repository.get_by_tg_id(uid)

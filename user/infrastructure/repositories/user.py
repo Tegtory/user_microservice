@@ -1,5 +1,6 @@
 import uuid
 
+from user.common.exceptions import NotFoundError
 from user.domain.models import AuthUser, User
 
 
@@ -18,7 +19,7 @@ class MemoryUserRepositoryImpl:
     async def get(self, uid: uuid.UUID) -> User | None:
         return User()
 
-    async def get_by_telegram_id(self, uid: int) -> User | None:
+    async def get_by_tg_id(self, uid: int) -> User | None:
         for i in filter(lambda x: x.telegram_id == uid, self.users):
             return i if isinstance(i, User) else None
-        return None
+        raise NotFoundError
