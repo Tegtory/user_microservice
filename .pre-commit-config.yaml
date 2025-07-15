@@ -15,7 +15,7 @@ repos:
       - id: fix-encoding-pragma
         args: [--remove]
       - id: mixed-line-ending
-        args: [--fix=lf]
+        args: [--fix=crlf]
         types: [python]
       - id: trailing-whitespace
 
