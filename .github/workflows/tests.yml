@@ -1,0 +1,28 @@
+name: Coverage
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.12"
+
+    - name: check ruff
+      run: |
+        pip install -r requirements.txt
+        ruff check .
+        mypy .
+
+    - name: Test with pytest
+      run: |
+        pip install -r requirements.txt
+        coverage run -m pytest --junitxml=junit.xml
+        coverage report
+        coverage xml
