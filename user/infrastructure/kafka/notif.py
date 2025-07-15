@@ -14,7 +14,7 @@ class NotifRepositoryImpl:
         self.exchange = exchange
 
     async def about__user_registered(
-            self, notification: UserRegisteredNotification
+        self, notification: UserRegisteredNotification
     ) -> None:
         body = json.dumps(notification.model_dump()).encode()
         message = Message(body, delivery_mode=DeliveryMode.PERSISTENT)

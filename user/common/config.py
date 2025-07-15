@@ -8,3 +8,4 @@ class Config(BaseSettings):
 
     SECRET_KEY: str
     RABIT_HOST: str
+    DATABASE: str | None = None
