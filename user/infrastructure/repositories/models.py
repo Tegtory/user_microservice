@@ -2,9 +2,12 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy import UUID, Boolean, Integer, String, func
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.ext.asyncio import AsyncAttrs
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-from user.infrastructure.repositories.slqalchemy import Base
+
+class Base(AsyncAttrs, DeclarativeBase):
+    __abstract__ = True
 
 
 class User(Base):
@@ -13,6 +16,8 @@ class User(Base):
     id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key=True)
     telegram_id: Mapped[int] = mapped_column(Integer, nullable=False)
     username: Mapped[str] = mapped_column(String, nullable=False)
+
+    name: Mapped[str | None]
 
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False)
     is_banned: Mapped[bool] = mapped_column(Boolean, default=False)

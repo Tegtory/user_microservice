@@ -5,7 +5,7 @@ from concurrent import futures
 import grpc
 
 import user.auth_pb2_grpc as auth_grpc
-from user.presentors.grpc.service import AuthService
+from user.presentors.grpc.services.auth import AuthService
 
 logger = logging.getLogger(__name__)
 
@@ -17,9 +17,9 @@ class Server:
         self._port = port
         self._host = host
         self._server = grpc.aio.server(
-            futures.ThreadPoolExecutor(max_workers=max_workers)
+            futures.ThreadPoolExecutor(max_workers=max_workers),
         )
-        auth_grpc.add_AuthServiceServicer_to_server(
+        auth_grpc.add_AuthServiceServicer_to_server(  # type: ignore[no-untyped-call]
             AuthService(), self._server
         )
         self._server.add_insecure_port(f"{self._host}:{self._port}")
@@ -27,7 +27,7 @@ class Server:
 
     async def serve(self) -> None:
         await self._server.start()
-        logger.info(f"Listening on {self._host}:{self._port}")
+        logger.info("Listening on %s", f"{self._host}:{self._port}")
         logger.info("Press CTRL+C to stop...")
 
         with contextlib.suppress(KeyboardInterrupt):

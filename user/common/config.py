@@ -8,8 +8,8 @@ class Config(BaseSettings):
 
     SECRET_KEY: str
     RABBIT_HOST: str = "localhost"
-    RABBIT_PASSWORD: str = "guest"
     RABBIT_USER: str = "guest"
+    RABBIT_PASSWORD: str
     DB_USER: str
     DB_PASSWORD: str
     DB_HOST: str
@@ -22,7 +22,8 @@ class Config(BaseSettings):
             f"{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
         )
 
-    def get_rabbit_url(self) -> str:
+    @property
+    def rabbit_url(self) -> str:
         return (
             "amqp://"
             f"{self.RABBIT_USER}:{self.RABBIT_PASSWORD}@{self.RABBIT_HOST}/"

@@ -6,10 +6,11 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from user.infrastructure.repositories.slqalchemy import DB_URL, Base
+from user.common.config import config as project
+from user.infrastructure.repositories.models import Base
 
 config = context.config
-config.set_main_option("sqlalchemy.url", DB_URL)
+config.set_main_option("sqlalchemy.url", project.get_db_url())
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)

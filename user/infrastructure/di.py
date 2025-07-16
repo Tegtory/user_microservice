@@ -4,11 +4,12 @@ from aio_pika.abc import AbstractExchange
 from dishka import Provider, Scope, make_async_container, provide
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from user.common.config import config
 from user.domain.interfaces.notification import UserNotificationRepository
 from user.domain.interfaces.user import UserRepository
 from user.domain.use_cases.user import UserUseCase
-from user.infrastructure.rabit.notif import NotificationRepositoryImpl
-from user.infrastructure.rabit.service import RabbitMQService
+from user.infrastructure.rabbit.notif import NotificationRepositoryImpl
+from user.infrastructure.rabbit.service import RabbitMQ
 from user.infrastructure.repositories.slqalchemy import Database
 from user.infrastructure.repositories.user import SQLUserRepositoryImpl
 
@@ -26,11 +27,11 @@ provider.provide(UserUseCase)
 class ConnectionProvider(Provider):
     @provide(scope=Scope.APP)
     async def provide_engine(self) -> AsyncSession:
-        return await Database().get_session()
+        return await Database(config.get_db_url()).get_session()
 
     @provide(scope=Scope.APP)
     async def provide_exchange(self) -> AbstractExchange:
-        return await RabbitMQService.get_exchange("logs")
+        return await RabbitMQ(config.rabbit_url).get_exchange("logs")
 
 
 container = make_async_container(provider, ConnectionProvider())

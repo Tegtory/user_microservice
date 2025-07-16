@@ -1,8 +1,8 @@
-"""Initial revision
+"""empty message
 
-Revision ID: 13bd1c08f588
+Revision ID: 905be5b709b9
 Revises:
-Create Date: 2025-07-15 21:55:36.195486
+Create Date: 2025-07-16 12:50:23.146046
 
 """
 
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision: str = "13bd1c08f588"
+revision: str = "905be5b709b9"
 down_revision: str | Sequence[str] | None = None
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
@@ -26,6 +26,7 @@ def upgrade() -> None:
         sa.Column("id", sa.UUID(), nullable=False),
         sa.Column("telegram_id", sa.Integer(), nullable=False),
         sa.Column("username", sa.String(), nullable=False),
+        sa.Column("name", sa.String(), nullable=True),
         sa.Column("is_admin", sa.Boolean(), nullable=False),
         sa.Column("is_banned", sa.Boolean(), nullable=False),
         sa.Column(

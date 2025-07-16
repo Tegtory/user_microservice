@@ -7,7 +7,7 @@ from dishka.integrations.base import wrap_injection
 from .di import container
 
 
-def inject(func: Callable) -> Any:
+def inject(func: Callable) -> Callable:
     def container_getter(
         _args: tuple[Any, ...], _kwargs: dict[str, Any]
     ) -> AsyncContainer:
