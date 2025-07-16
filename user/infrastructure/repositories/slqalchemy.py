@@ -11,7 +11,7 @@ from user.common.config import config
 DB_URL = config.get_db_url()
 
 
-class DatabaseService:
+class Database:
     def __init__(self) -> None:
         self.engine = create_async_engine(url=DB_URL)
         self.maker = async_sessionmaker(self.engine, expire_on_commit=False)

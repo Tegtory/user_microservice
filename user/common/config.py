@@ -7,7 +7,9 @@ class Config(BaseSettings):
     )
 
     SECRET_KEY: str
-    RABIT_HOST: str
+    RABBIT_HOST: str = "localhost"
+    RABBIT_PASSWORD: str = "guest"
+    RABBIT_USER: str = "guest"
     DB_USER: str
     DB_PASSWORD: str
     DB_HOST: str
@@ -18,6 +20,12 @@ class Config(BaseSettings):
         return (
             f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@"
             f"{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        )
+
+    def get_rabbit_url(self) -> str:
+        return (
+            "amqp://"
+            f"{self.RABBIT_USER}:{self.RABBIT_PASSWORD}@{self.RABBIT_HOST}/"
         )
 
 

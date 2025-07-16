@@ -1,5 +1,35 @@
 [project]
-name = "User Microservice"
+name = "user"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "sinortax",email = "github@sinortax.ru"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "aio-pika (==9.5.5)",
+    "aiormq (==6.8.1)",
+    "alembic (==1.16.4)",
+    "asyncpg (==0.30.0)",
+    "dishka (==1.6.0)",
+    "grpcio (==1.73.1)",
+    "grpcio-tools (==1.73.1)",
+    "pydantic (==2.11.7)",
+    "pydantic-settings (==2.10.1)",
+    "sqlalchemy (==2.0.41)"
+]
+
+[tool.poetry.group.dev.dependencies]
+coverage = "7.9.2"
+mypy = "1.16.1"
+pytest = "8.4.1"
+pytest-asyncio = "1.0.0"
+ruff = "0.12.3"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]
 plugins = ["pydantic.mypy"]

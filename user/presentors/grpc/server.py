@@ -22,10 +22,10 @@ class Server:
         auth_grpc.add_AuthServiceServicer_to_server(
             AuthService(), self._server
         )
+        self._server.add_insecure_port(f"{self._host}:{self._port}")
+        logger.info("Server initialized...")
 
     async def serve(self) -> None:
-        logger.info("Starting server...")
-        self._server.add_insecure_port(f"{self._host}:{self._port}")
         await self._server.start()
         logger.info(f"Listening on {self._host}:{self._port}")
         logger.info("Press CTRL+C to stop...")

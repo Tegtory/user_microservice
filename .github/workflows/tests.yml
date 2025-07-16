@@ -16,13 +16,13 @@ jobs:
 
     - name: check ruff
       run: |
-        pip install -r requirements.txt
-        ruff check .
-        mypy .
+        pip install poetry
+        poetry install
+        poetry run ruff check .
+        poetry run mypy .
 
     - name: Test with pytest
       run: |
-        pip install -r requirements.txt
-        coverage run -m pytest --junitxml=junit.xml
-        coverage report
-        coverage xml
+        poetry run coverage run -m pytest --junitxml=junit.xml
+        poetry run coverage report
+        poetry run coverage xml

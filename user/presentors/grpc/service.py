@@ -7,6 +7,7 @@ from user.common.exceptions import AppError, NotFoundError
 from user.domain.models import AuthUser
 from user.domain.use_cases.user import UserUseCase
 from user.infrastructure.injector import inject
+from user.presentors.grpc.auth import is_request_authorized
 
 
 class AuthService(auth_grpc.AuthServiceServicer):
@@ -17,6 +18,7 @@ class AuthService(auth_grpc.AuthServiceServicer):
         context: ServicerContext,
         use_case: FromDishka[UserUseCase],
     ) -> proto.Empty:
+        is_request_authorized(context)
         try:
             await use_case.register_by_telegram(
                 user.telegram_id, user.username
@@ -32,6 +34,7 @@ class AuthService(auth_grpc.AuthServiceServicer):
         context: ServicerContext,
         use_case: FromDishka[UserUseCase],
     ) -> proto.User | None:
+        is_request_authorized(context)
         try:
             authorized = await use_case.get_by_telegram(user.telegram_id)
             return proto.User(
