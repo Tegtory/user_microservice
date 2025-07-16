@@ -13,7 +13,7 @@ class NotificationRepositoryImpl:
     async def about__user_registered(
         self, notification: UserRegisteredNotification
     ) -> None:
-        body = json.dumps({"id": str(notification.id)}).encode()
+        body = json.dumps(notification.model_dump()).encode()
         await self._send_notification(body)
 
     async def _send_notification(self, body: bytes) -> None:

@@ -1,3 +1,5 @@
+import logging
+
 from dishka import FromDishka
 from grpc import ServicerContext, StatusCode
 
@@ -9,6 +11,8 @@ from user.domain.use_cases.user import UserUseCase
 from user.infrastructure.injector import inject
 from user.presentors.grpc.security import is_request_authorized
 
+logger = logging.getLogger(__name__)
+
 
 class AuthService(auth_grpc.AuthServiceServicer):
     @inject
@@ -18,6 +22,7 @@ class AuthService(auth_grpc.AuthServiceServicer):
         context: ServicerContext,
         use_case: FromDishka[UserUseCase],
     ) -> proto.Empty:
+        logger.info("Received request on register_telegram")
         if not is_request_authorized(context):
             return None
         try:
@@ -35,20 +40,21 @@ class AuthService(auth_grpc.AuthServiceServicer):
     @inject
     async def login_telegram(
         self,
-        user: LoginUser,
+        request: LoginUser,
         context: ServicerContext,
         use_case: FromDishka[UserUseCase],
     ) -> proto.User | None:
+        logger.info("Received request on login_telegram")
         if not is_request_authorized(context):
             return None
         try:
-            authorized = await use_case.get_by_telegram(user.telegram_id)
+            user = await use_case.get_by_telegram(request.telegram_id)
         except NotFoundError:
             context.set_code(StatusCode.NOT_FOUND)
             return None
         return proto.User(
-            id=str(authorized.id),
-            name=authorized.name,
-            is_admin=authorized.is_admin,
-            is_banned=authorized.is_banned,
+            id=str(user.id),
+            name=user.name,
+            is_admin=user.is_admin,
+            is_banned=user.is_banned,
         )

@@ -18,7 +18,7 @@ class UserUseCase:
         except NotFoundError:
             user = await self.repository.create(register_user)
             return await self.notif.about__user_registered(
-                UserRegisteredNotification(id=user.id),
+                UserRegisteredNotification(id=str(user.id)),
             )
         raise AppError
 

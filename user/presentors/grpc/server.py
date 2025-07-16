@@ -19,7 +19,7 @@ class Server:
         self._server = grpc.aio.server(
             futures.ThreadPoolExecutor(max_workers=max_workers),
         )
-        auth_grpc.add_AuthServiceServicer_to_server(  # type: ignore[no-untyped-call]
+        auth_grpc.add_AuthServiceServicer_to_server(  # type: ignore
             AuthService(), self._server
         )
         self._server.add_insecure_port(f"{self._host}:{self._port}")
@@ -28,7 +28,6 @@ class Server:
     async def serve(self) -> None:
         await self._server.start()
         logger.info("Listening on %s", f"{self._host}:{self._port}")
-        logger.info("Press CTRL+C to stop...")
 
         with contextlib.suppress(KeyboardInterrupt):
             await self._server.wait_for_termination()

@@ -1,5 +1,3 @@
-import uuid
-
 import pydantic
 
 
@@ -8,4 +6,4 @@ class BaseNotification(pydantic.BaseModel):
 
 
 class UserRegisteredNotification(BaseNotification):
-    id: uuid.UUID
+    id: str
