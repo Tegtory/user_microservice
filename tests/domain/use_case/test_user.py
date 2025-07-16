@@ -7,14 +7,14 @@ from user.domain.models import AuthUser
 from user.domain.use_cases.user import User, UserUseCase
 
 
-@pytest.fixture()
+@pytest.fixture
 def notif_repo() -> MagicMock:
     mock = MagicMock()
     mock.about__user_registered = AsyncMock()
     return mock
 
 
-@pytest.fixture()
+@pytest.fixture
 def user_repo() -> MagicMock:
     mock = MagicMock()
     mock.get_by_tg_id = AsyncMock()
@@ -22,7 +22,7 @@ def user_repo() -> MagicMock:
     return mock
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test__create_user__success(
     user_repo: MagicMock, notif_repo: MagicMock
 ) -> None:
@@ -36,7 +36,7 @@ async def test__create_user__success(
     notif_repo.about__user_registered.assert_called_once()
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test__registered__failure_user_exists(
     user_repo: MagicMock, notif_repo: MagicMock
 ) -> None:
@@ -50,7 +50,7 @@ async def test__registered__failure_user_exists(
     notif_repo.about__user_registered.assert_not_called()
 
 
-@pytest.mark.asyncio()
+@pytest.mark.asyncio
 async def test__get_user__success(
     user_repo: MagicMock, notif_repo: MagicMock
 ) -> None:

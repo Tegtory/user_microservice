@@ -97,8 +97,35 @@ exclude = [
     "migration"
 ]
 
-select = ["ALL"]
-ignore = ["S101", "D", "COM812"]
+select = [
+    "E4",
+    "E7",
+    "E9",
+    "F",
+    "I",
+    "E",
+    "T",
+    "T201",
+    "W",
+    "B",
+    "ERA",
+    "ASYNC",
+    "FBT",
+    "A",
+    "INP",
+    "SIM",
+    "TD",
+    "C90",
+    "N",
+    "PL",
+    "PLE",
+    "PLR",
+    "PLW",
+    "UP",
+    "FURB",
+    "RUF",
+]
+ignore = []
 
 fixable = ["ALL"]
 unfixable = []
