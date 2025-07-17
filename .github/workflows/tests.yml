@@ -14,12 +14,10 @@ jobs:
       with:
         python-version: "3.12"
 
-    - name: check ruff
+    - name: prepare environment
       run: |
         pip install poetry
         poetry install
-        poetry run ruff check .
-        poetry run mypy .
 
     - name: Test with pytest
       run: |

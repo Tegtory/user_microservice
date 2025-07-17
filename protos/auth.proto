@@ -13,13 +13,13 @@ message User {
 }
 
 message AuthUser {
-  int32 telegram_id = 1;
+  int64 telegram_id = 1;
   string username = 2;
   optional string name = 3;
 }
 
 message LoginUser {
-  int32 telegram_id = 1;
+  int64 telegram_id = 1;
 }
 
 message ChangeName {

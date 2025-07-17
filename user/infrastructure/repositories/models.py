@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 
-from sqlalchemy import UUID, Boolean, Integer, String, func
+from sqlalchemy import UUID, BigInteger, Boolean, String, func
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -14,7 +14,7 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID, primary_key=True)
-    telegram_id: Mapped[int] = mapped_column(Integer, nullable=False)
+    telegram_id: Mapped[int] = mapped_column(BigInteger, nullable=False)
     username: Mapped[str] = mapped_column(String, nullable=False)
 
     name: Mapped[str | None]
