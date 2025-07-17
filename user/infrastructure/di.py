@@ -27,10 +27,10 @@ provider.provide(UserUseCase)
 class ConnectionProvider(Provider):
     @provide(scope=Scope.APP)
     async def provide_engine(self) -> AsyncSession:
-        return await Database(config.get_db_url()).get_session()
+        return await Database(config.db_url).get_session()
 
     @provide(scope=Scope.APP)
-    async def provide_exchange(self) -> AbstractExchange:
+    async def provide_exchange(self) -> AbstractExchange | None:
         return await RabbitMQ(config.rabbit_url).get_exchange("logs")
 
 

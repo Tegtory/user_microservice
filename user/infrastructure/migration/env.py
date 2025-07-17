@@ -10,7 +10,7 @@ from user.common.config import config as project
 from user.infrastructure.repositories.models import Base
 
 config = context.config
-config.set_main_option("sqlalchemy.url", project.get_db_url())
+config.set_main_option("sqlalchemy.url", project.db_url)
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)

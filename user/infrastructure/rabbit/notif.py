@@ -7,7 +7,7 @@ from user.domain.notifications import UserRegisteredNotification
 
 
 class NotificationRepositoryImpl:
-    def __init__(self, exchange: AbstractExchange) -> None:
+    def __init__(self, exchange: AbstractExchange | None) -> None:
         self.exchange = exchange
 
     async def about__user_registered(
@@ -17,5 +17,7 @@ class NotificationRepositoryImpl:
         await self._send_notification(body)
 
     async def _send_notification(self, body: bytes) -> None:
+        if not self.exchange:
+            return
         message = Message(body, delivery_mode=DeliveryMode.PERSISTENT)
         await self.exchange.publish(message, routing_key="info")
