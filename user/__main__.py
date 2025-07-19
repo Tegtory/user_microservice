@@ -6,7 +6,8 @@ from user.presentors.grpc.server import Server
 
 
 async def main(args: argparse.Namespace) -> None:
-    await asyncio.gather(Server(**args.__dict__).serve())
+    async with Server(**args.__dict__) as server:
+        await server.serve()
 
 
 if __name__ == "__main__":

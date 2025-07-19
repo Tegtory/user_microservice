@@ -9,7 +9,6 @@ from user.common.exceptions import AppError, NotFoundError
 from user.domain.models import AuthUser, LoginUser
 from user.domain.use_cases.user import UserUseCase
 from user.infrastructure.injector import inject
-from user.presentors.grpc.security import is_request_authorized
 
 logger = logging.getLogger(__name__)
 
@@ -23,14 +22,12 @@ class AuthService(auth_grpc.AuthServiceServicer):
         use_case: FromDishka[UserUseCase],
     ) -> proto.Empty:
         logger.info("Received request on register_telegram")
-        if not is_request_authorized(context):
-            return None
         try:
             await use_case.register_by_telegram(
                 AuthUser(
                     telegram_id=user.telegram_id,
                     username=user.username,
-                    name=user.name,
+                    name=getattr(user, "name", None),
                 ),
             )
         except AppError:
@@ -45,8 +42,6 @@ class AuthService(auth_grpc.AuthServiceServicer):
         use_case: FromDishka[UserUseCase],
     ) -> proto.User | None:
         logger.info("Received request on login_telegram")
-        if not is_request_authorized(context):
-            return None
         try:
             user = await use_case.get_by_telegram(request.telegram_id)
         except NotFoundError:
