@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     command: >
       sh -c "poetry run alembic upgrade head &&
-             poetry run python -m user --host=dev.u.osi.im --port=5051"
+             poetry run python -m user --port=5051"
     depends_on:
       - db
     ports:
