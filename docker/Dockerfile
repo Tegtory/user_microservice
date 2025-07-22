@@ -1,6 +1,6 @@
-from python:3.12-slim
+FROM python:3.12
 
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
@@ -11,6 +11,6 @@ RUN pip install --upgrade pip && pip install poetry
 COPY . .
 
 RUN poetry install
-RUN alembic upgrade head
+RUN poetry run alembic upgrade head
 
 ENTRYPOINT ["python", "-m", "user"]
