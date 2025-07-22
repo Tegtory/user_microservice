@@ -6,8 +6,11 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install --upgrade pip && pip install --use-feature=fast-deps -r requirements.txt
+RUN pip install --upgrade pip && pip install poetry
 
 COPY . .
 
-CMD ["python", "-m", "user"]
+RUN poetry install
+RUN alembic upgrade head
+
+ENTRYPOINT ["python", "-m", "user"]

@@ -1,0 +1,19 @@
+services:
+  user:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    restart: unless-stopped
+    command: --host=dev.u.osi.im --port=5051
+    depends_on:
+      - db
+    ports:
+      - "5051:5051"
+  db:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}

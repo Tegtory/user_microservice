@@ -25,7 +25,15 @@ class Server:
         auth_grpc.add_AuthServiceServicer_to_server(  # type: ignore
             AuthService(), self._server
         )
-        self._server.add_insecure_port(f"{self._host}:{self._port}")
+        with open("server.key", "rb") as f:
+            private_key = f.read()
+        with open("server.crt", "rb") as f:
+            certificate = f.read()
+
+        self._server.add_secure_port(
+            f"{self._host}:{self._port}",
+            grpc.ssl_server_credentials([(private_key, certificate)]),
+        )
         logger.info("Server initialized...")
 
     async def serve(self) -> None:
