@@ -11,6 +11,9 @@ services:
       - db
     ports:
       - "5051:5051"
+    volumes:
+      - ${KEY_PATH}:${KEY_PATH}
+      - ${CERT_PATH}:${CERT_PATH}
   db:
     image: postgres:16
     volumes:
