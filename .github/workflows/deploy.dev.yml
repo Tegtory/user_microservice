@@ -13,5 +13,5 @@ jobs:
           clean: false
           path: "dev"
       - run: |
-          docker compose -f docker/docker-compose.dev.yml down
-          docker compose -f docker/docker-compose.dev.yml up -d --build
+          docker compose -f dev/docker/docker-compose.dev.yml down
+          docker compose -f dev/docker/docker-compose.dev.yml up -d --build
