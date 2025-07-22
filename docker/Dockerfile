@@ -11,6 +11,5 @@ RUN pip install --upgrade pip && pip install poetry
 COPY . .
 
 RUN poetry install
-RUN poetry run alembic upgrade head
 
 ENTRYPOINT ["python", "-m", "user"]

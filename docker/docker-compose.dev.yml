@@ -4,7 +4,9 @@ services:
       context: ../
       dockerfile: docker/Dockerfile
     restart: unless-stopped
-    command: --host=dev.u.osi.im --port=5051
+    command: >
+      sh -c "poetry run alembic upgrade head &&
+             python -m user --host=dev.u.osi.im --port=5051"
     depends_on:
       - db
     ports:
