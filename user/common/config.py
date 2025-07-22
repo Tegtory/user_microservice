@@ -16,6 +16,8 @@ class Config(BaseSettings):
     DB_PORT: int
     DB_NAME: str
     ENABLE_NOTIFICATIONS: bool = False
+    CERT_PATH: str | None = None
+    KEY_PATH: str | None = None
 
     @property
     def db_url(self) -> str:

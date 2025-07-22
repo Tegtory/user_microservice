@@ -25,15 +25,17 @@ class Server:
         auth_grpc.add_AuthServiceServicer_to_server(  # type: ignore
             AuthService(), self._server
         )
-        with open("server.key", "rb") as f:
-            private_key = f.read()
-        with open("server.crt", "rb") as f:
-            certificate = f.read()
-
-        self._server.add_secure_port(
-            f"{self._host}:{self._port}",
-            grpc.ssl_server_credentials([(private_key, certificate)]),
-        )
+        if config.KEY_PATH and config.CERT_PATH:
+            with open(config.KEY_PATH, "rb") as f:
+                private_key = f.read()
+            with open(config.CERT_PATH, "rb") as f:
+                certificate = f.read()
+            self._server.add_secure_port(
+                f"{self._host}:{self._port}",
+                grpc.ssl_server_credentials([(private_key, certificate)]),
+            )
+        else:
+            self._server.add_insecure_port(f"{self._host}:{self._port}")
         logger.info("Server initialized...")
 
     async def serve(self) -> None:
