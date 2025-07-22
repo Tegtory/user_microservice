@@ -12,4 +12,7 @@ COPY . .
 
 RUN poetry install
 
-ENTRYPOINT ["python", "-m", "user"]
+RUN poetry run python -m grpc_tools.protoc --proto_path=./protos/ --python_out=. --grpc_python_out=. protos/user/*.proto
+
+
+ENTRYPOINT ["poetry", "run", "python", "-m", "user"]
