@@ -17,6 +17,7 @@ services:
       - ${CERT_PATH}:${CERT_PATH}
   db:
     image: postgres:16
+    container_name: user-prod-db
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
