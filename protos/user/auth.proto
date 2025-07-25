@@ -23,7 +23,7 @@ message LoginUser {
 }
 
 message UserId {
-  int64 id = 1;
+  string id = 1;
 }
 
 message ChangeName {
