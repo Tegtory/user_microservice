@@ -35,7 +35,7 @@ class SQLUserRepositoryImpl:
 
     async def get(self, uid: uuid.UUID) -> User:
         logger.info("Microservice authorizing - %s", uid)
-        stmt = select(BDUser).where(BDUser.telegram_id == uid)
+        stmt = select(BDUser).where(BDUser.id == uid)
         user = (await self.session.execute(stmt)).first()
         if user:
             return self.parse(user[0])
