@@ -22,6 +22,10 @@ class LoginUser(BaseModel):
     telegram_id: int
 
 
+class GetUser(BaseModel):
+    id: uuid.UUID
+
+
 class ChangeName(BaseModel):
     id: uuid.UUID
     name: str

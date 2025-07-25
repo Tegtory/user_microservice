@@ -4,13 +4,17 @@ services:
       context: ../
       dockerfile: docker/Dockerfile
     restart: unless-stopped
+    container_name: user-prod
     command: >
       sh -c "poetry run alembic upgrade head &&
-             python -m user --host=u.osi.im --port=5050"
+             poetry run python -m user --port=5052"
     depends_on:
       - db
     ports:
       - "5051:5051"
+    volumes:
+      - ${KEY_PATH}:${KEY_PATH}
+      - ${CERT_PATH}:${CERT_PATH}
   db:
     image: postgres:16
     volumes:

@@ -1,5 +1,6 @@
 import logging
 import uuid
+from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -32,22 +33,28 @@ class SQLUserRepositoryImpl:
     async def update(self, user: User) -> User:
         return user
 
-    async def get(self, uid: uuid.UUID) -> User | None:
-        logger.info(str(uid))
-        return None
+    async def get(self, uid: uuid.UUID) -> User:
+        logger.info("Microservice authorizing - %s", uid)
+        stmt = select(BDUser).where(BDUser.telegram_id == uid)
+        user = (await self.session.execute(stmt)).first()
+        if user:
+            return self.parse(user[0])
+        raise NotFoundError
 
     async def get_by_tg_id(self, uid: int) -> User | None:
         logger.info("Authorizing user - %s", uid)
         stmt = select(BDUser).where(BDUser.telegram_id == uid)
         user = (await self.session.execute(stmt)).first()
         if user:
-            return User(
-                username=user[0].username,
-                telegram_id=user[0].telegram_id,
-                id=user[0].id,
-                name=user[0].name,
-                is_admin=user[0].is_admin,
-                is_banned=user[0].is_banned,
-            )
-
+            return self.parse(user[0])
         raise NotFoundError
+
+    def parse(self, user: Any) -> User:
+        return User(
+            username=user.username,
+            telegram_id=user.telegram_id,
+            id=user.id,
+            name=user.name,
+            is_admin=user.is_admin,
+            is_banned=user.is_banned,
+        )

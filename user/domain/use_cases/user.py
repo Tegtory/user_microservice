@@ -1,4 +1,5 @@
 import dataclasses
+import uuid
 
 from user.common.exceptions import AppError, NotFoundError
 from user.domain.interfaces.notification import UserNotificationRepository
@@ -7,7 +8,7 @@ from user.domain.models import AuthUser, User
 from user.domain.notifications import UserRegisteredNotification
 
 
-@dataclasses.dataclass()
+@dataclasses.dataclass(frozen=True, slots=True)
 class UserUseCase:
     repository: UserRepository
     notif: UserNotificationRepository
@@ -24,3 +25,6 @@ class UserUseCase:
 
     async def get_by_telegram(self, uid: int) -> User:
         return await self.repository.get_by_tg_id(uid)
+
+    async def get_by_id(self, uid: uuid.UUID) -> User:
+        return await self.repository.get(uid)
