@@ -7,11 +7,11 @@ services:
     container_name: user-dev
     command: >
       sh -c "poetry run alembic upgrade head &&
-             poetry run python -m user --host=127.0.0.1 --port=90051"
+             poetry run python -m user --host=127.0.0.1 --port=9051"
     depends_on:
       - db
     ports:
-      - "90051:90051"
+      - "9051:9051"
   db:
     image: postgres:16
     container_name: user-dev-db
