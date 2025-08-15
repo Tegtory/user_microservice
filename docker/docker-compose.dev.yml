@@ -13,8 +13,20 @@ services:
     ports:
       - "5051:5051"
     volumes:
-      - ${KEY_PATH}:${KEY_PATH}
-      - ${CERT_PATH}:${CERT_PATH}
+        - type: bind
+          source: ${KEY_PATH}
+          target: ${KEY_PATH}
+          read_only: true
+          bind:
+            create_host_path: true
+            propagation: rprivate
+        - type: bind
+          source: ${CERT_PATH}
+          target: ${CERT_PATH}
+          read_only: true
+          bind:
+            create_host_path: true
+            propagation: rprivate
   db:
     image: postgres:16
     container_name: user-dev-db
