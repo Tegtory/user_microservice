@@ -16,7 +16,7 @@ services:
     image: postgres:16
     container_name: user-dev-db
     volumes:
-      - user_microservice_dev_postgres_data:/var/lib/user_microservice_dev_postgres_data/data/
+      - user_microservice_dev_postgres_data:/var/lib/postgresql/data/
     environment:
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${DB_USER}
