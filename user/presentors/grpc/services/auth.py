@@ -17,22 +17,28 @@ class AuthService(auth_grpc.AuthServiceServicer):
     @inject
     async def register_telegram(
         self,
-        user: AuthUser,
+        request: AuthUser,
         context: ServicerContext,
         use_case: FromDishka[UserUseCase],
-    ) -> proto.Empty:
+    ) -> proto.User:
         logger.info("Received request on register_telegram")
         try:
-            await use_case.register_by_telegram(
+            user = await use_case.register_by_telegram(
                 AuthUser(
-                    telegram_id=user.telegram_id,
-                    username=user.username,
-                    name=getattr(user, "name", None),
+                    telegram_id=request.telegram_id,
+                    username=request.username,
+                    name=getattr(request, "name", None),
                 ),
+            )
+            return proto.User(
+                id=str(user.id),
+                name=user.name,
+                is_admin=user.is_admin,
+                is_banned=user.is_banned,
             )
         except AppError:
             context.set_code(StatusCode.ALREADY_EXISTS)
-        return proto.Empty()
+            return None
 
     @inject
     async def login_telegram(

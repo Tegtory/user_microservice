@@ -1,5 +1,5 @@
 services:
-  user:
+  user_microservice_dev:
     build:
       context: ../
       dockerfile: docker/Dockerfile
@@ -9,10 +9,10 @@ services:
       sh -c "poetry run alembic upgrade head &&
              poetry run python -m user --host=0.0.0.0 --port=9051"
     depends_on:
-      - db
-    ports:
-      - "127.0.0.1:9051:9051"
-  db:
+      - db_user_microservice
+    ports:  
+      - "9051:9051"
+  db_user_microservice:
     image: postgres:16
     container_name: user-dev-db
     volumes:

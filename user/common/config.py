@@ -7,15 +7,18 @@ class Config(BaseSettings):
     )
 
     SECRET_KEY: str
+
     RABBIT_HOST: str = "localhost"
     RABBIT_USER: str = "guest"
-    RABBIT_PASSWORD: str
+    RABBIT_PASSWORD: str = ""
+    ENABLE_NOTIFICATIONS: bool = False
+
+    DB_HOST: str
+    DB_PORT: int = 5432
+    DB_NAME: str
     DB_USER: str
     DB_PASSWORD: str
-    DB_HOST: str
-    DB_PORT: int
-    DB_NAME: str
-    ENABLE_NOTIFICATIONS: bool = False
+
     CERT_PATH: str | None = None
     KEY_PATH: str | None = None
 

@@ -36,6 +36,7 @@ class Server:
             )
         else:
             self._server.add_insecure_port(f"{self._host}:{self._port}")
+            logger.warning("Running in insecure mode")
         logger.info("Server initialized...")
 
     async def serve(self) -> None:

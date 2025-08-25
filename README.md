@@ -1,32 +1,45 @@
-# Микросервис авторизации - Tegtory
+# Tegtory User Microservice
 
-## запуск
+this microservice work with bots to manage users and their data, storing data like ban status and providing user-related services.
 
-1. генерация .py файлов из протокола
+## Features
 
-    ```bash
-   > .\compile_proto.bat
-    ```
+- User registration and authentication
+- Notifications about user registration ( disabled by default )
 
-2. env
+## Start up
 
-3. запуск
+### environment variables
 
-    ```bash
-   > alembic upgrade head
-    ```
+- `DB_HOST`: URL of the database to connect to.
+- `DB_PORT`: Database port. default: 5432
+- `DB_NAME`: Database name.
+- `DB_USER`: Database username.
+- `DB_PASSWORD`: Database password.
+- `SECRET_KEY`: Secret key for authorizing services.
 
-    ```bash
-   > python -m user
-    ```
+`for rabbitmq environments check user/common/config.py`
 
-4. или дев/прод стенды
+### Docker
 
-    ```bash
-   > docker compose -f ...
-    ```
+```bash
+$ docker compose -f docker/docker-compose.dev.yml --env-file .env up -d --build
+```
+
+### python
+
+```bash
+pip install poetry # if not installed
+poetry install
+poetry run python -m user
+```
 
 # TODO
 
-- [ ] Полноценная авторизация с помощью ТГ
-- [ ] Оптимизация и улучшения уведомлений RabbitMQ
+- [ ] Implement profile actions
+- [ ] mTLS??
+
+# contribution
+
+any contributions are welcome, please open an issue or a pull request.
+

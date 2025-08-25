@@ -3,7 +3,6 @@ from typing import Any
 
 from grpc import (
     HandlerCallDetails,
-    ServicerContext,
     StatusCode,
     aio,
     unary_unary_rpc_method_handler,
@@ -19,11 +18,9 @@ class ApiKeyInterceptor(aio.ServerInterceptor):
     ) -> Any:
         metadata = dict(handler_call_details.invocation_metadata)
         if metadata.get("auth") != self.valid_api_key:
-            return unary_unary_rpc_method_handler(
-                partial(self.deny, details="Токен не найден")
-            )
+            return unary_unary_rpc_method_handler(self.deny)
         return await continuation(handler_call_details)
 
     @staticmethod
-    async def deny(_: bytes, context: ServicerContext, details: str) -> None:
-        await context.abort(StatusCode.UNAUTHENTICATED, details)
+    async def deny(_: bytes, context: aio.ServicerContext) -> None:
+        await context.abort(StatusCode.UNAUTHENTICATED, "Токен не найден")
